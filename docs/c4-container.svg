@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200" role="img" aria-labelledby="diagram-title diagram-desc">
+  <title id="diagram-title">SOS HW1 — контейнерная архитектура маркетплейса</title>
+  <desc id="diagram-desc">Авторская C4 Container-диаграмма LisaStrsh: участники, клиентское приложение, API Gateway, шесть доменных сервисов, брокер событий, отдельные базы и внешние провайдеры.</desc>
+
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#172554" flood-opacity="0.12"/>
+    </filter>
+    <marker id="sync-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <marker id="event-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#db2777"/>
+    </marker>
+    <marker id="event-arrow-start" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M9,0 L9,6 L0,3 z" fill="#db2777"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+      .page-title { font-size: 34px; font-weight: 750; fill: #172554; }
+      .page-subtitle { font-size: 16px; fill: #64748b; }
+      .eyebrow { font-size: 13px; font-weight: 750; letter-spacing: 1.4px; fill: #4f46e5; }
+      .boundary { fill: #ffffff; stroke: #a5b4fc; stroke-width: 2; stroke-dasharray: 11 8; }
+      .boundary-title { font-size: 14px; font-weight: 750; letter-spacing: 1px; fill: #4f46e5; }
+      .actor { fill: #172554; stroke: #0f172a; stroke-width: 1.5; }
+      .client { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; }
+      .gateway { fill: #4f46e5; stroke: #3730a3; stroke-width: 2; }
+      .service { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; }
+      .service-band { fill: #eef2ff; }
+      .feed-band { fill: #ecfeff; }
+      .payment-band { fill: #faf5ff; }
+      .notification-band { fill: #fff7ed; }
+      .database { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.4; }
+      .external { fill: #fff7ed; stroke: #fdba74; stroke-width: 1.5; }
+      .broker { fill: #831843; stroke: #500724; stroke-width: 2; }
+      .card-title { font-size: 19px; font-weight: 750; fill: #172554; }
+      .card-title-light { font-size: 19px; font-weight: 750; fill: #ffffff; }
+      .card-type { font-size: 12px; font-weight: 650; fill: #6366f1; letter-spacing: .4px; }
+      .card-type-light { font-size: 12px; font-weight: 650; fill: #c7d2fe; letter-spacing: .4px; }
+      .card-copy { font-size: 13px; fill: #526071; }
+      .card-copy-light { font-size: 13px; fill: #e0e7ff; }
+      .db-title { font-size: 15px; font-weight: 750; fill: #334155; }
+      .db-copy { font-size: 12px; fill: #64748b; }
+      .sync { fill: none; stroke: #334155; stroke-width: 2.2; marker-end: url(#sync-arrow); }
+      .event { fill: none; stroke: #db2777; stroke-width: 2.5; stroke-dasharray: 9 7; marker-end: url(#event-arrow); }
+      .event-both { fill: none; stroke: #db2777; stroke-width: 2.5; stroke-dasharray: 9 7; marker-start: url(#event-arrow-start); marker-end: url(#event-arrow); }
+      .ownership { fill: none; stroke: #94a3b8; stroke-width: 1.8; }
+      .edge-label { font-size: 12px; font-weight: 700; fill: #475569; paint-order: stroke; stroke: #f6f7fb; stroke-width: 5px; stroke-linejoin: round; }
+      .event-label { font-size: 12px; font-weight: 700; fill: #be185d; paint-order: stroke; stroke: #f6f7fb; stroke-width: 5px; }
+      .legend { font-size: 13px; fill: #475569; }
+      .badge { fill: #eef2ff; stroke: #c7d2fe; }
+      .badge-text { font-size: 12px; font-weight: 750; fill: #4338ca; letter-spacing: .7px; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1200" fill="#f6f7fb"/>
+
+  <!-- Header -->
+  <rect x="70" y="38" width="190" height="30" rx="15" class="badge"/>
+  <text x="165" y="58" text-anchor="middle" class="badge-text">SOS HW1 / LISASTRSH</text>
+  <text x="70" y="108" class="page-title">Marketplace: карта контейнеров</text>
+  <text x="70" y="136" class="page-subtitle">От пользовательского действия до доменного события и собственного хранилища</text>
+
+  <!-- System boundary -->
+  <rect x="255" y="165" width="1265" height="970" rx="24" class="boundary"/>
+  <rect x="285" y="151" width="245" height="28" rx="14" fill="#f6f7fb"/>
+  <text x="302" y="170" class="boundary-title">MARKETPLACE PLATFORM</text>
+
+  <!-- Edges: user access -->
+  <path d="M125 295 V415 H105 V430" class="sync"/>
+  <path d="M125 395 V415 H175 V430" class="sync"/>
+  <path d="M235 467 H255 V237 H680" class="sync"/>
+  <text x="272" y="226" class="edge-label">HTTPS / JSON</text>
+
+  <!-- Edges: gateway routes -->
+  <path d="M885 285 V320 H430 V360" class="sync"/>
+  <path d="M885 285 V320 H750 V360" class="sync"/>
+  <path d="M885 285 V320 H1070 V360" class="sync"/>
+  <path d="M1090 237 H1430 V760 H520 V790" class="sync"/>
+  <text x="1345" y="228" class="edge-label">checkout</text>
+
+  <!-- Synchronous service calls -->
+  <path d="M520 790 V748 H274 V620 H600 V460 H620" class="sync"/>
+  <text x="292" y="610" class="edge-label">товар + цена</text>
+  <path d="M660 855 H730" class="sync"/>
+  <text x="670" y="842" class="edge-label">payment intent</text>
+  <path d="M870 790 V750 H1500 V812 H1545" class="sync"/>
+  <text x="1360" y="740" class="edge-label">authorize / refund</text>
+  <path d="M1360 855 H1485 V970 H1545" class="sync"/>
+  <text x="1425" y="846" class="edge-label">delivery API</text>
+
+  <!-- Ownership links -->
+  <path d="M430 490 V515" class="ownership"/>
+  <path d="M750 490 V515" class="ownership"/>
+  <path d="M1070 490 V515" class="ownership"/>
+  <path d="M520 920 V945" class="ownership"/>
+  <path d="M870 920 V945" class="ownership"/>
+  <path d="M1220 920 V945" class="ownership"/>
+
+  <!-- Event connections -->
+  <path d="M860 425 C940 500 830 585 760 650" class="event"/>
+  <path d="M1090 650 C1280 600 1275 480 1200 425" class="event"/>
+  <path d="M610 790 C610 760 650 750 700 730" class="event"/>
+  <path d="M900 730 V790" class="event-both"/>
+  <path d="M1160 730 C1160 755 1190 770 1220 790" class="event"/>
+  <text x="845" y="575" class="event-label">ProductChanged</text>
+  <text x="1165" y="585" class="event-label">проекция ленты</text>
+
+  <!-- Actors outside the platform -->
+  <g filter="url(#shadow)">
+    <rect x="45" y="205" width="160" height="90" rx="16" class="actor"/>
+    <circle cx="85" cy="239" r="13" fill="#a5b4fc"/>
+    <path d="M67 276 C69 252 101 252 103 276" fill="#a5b4fc"/>
+    <text x="124" y="240" class="card-title-light">Покупатель</text>
+    <text x="124" y="262" class="card-type-light">[Person]</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="45" y="315" width="160" height="80" rx="16" class="actor"/>
+    <circle cx="85" cy="344" r="12" fill="#a5b4fc"/>
+    <path d="M69 378 C71 356 99 356 101 378" fill="#a5b4fc"/>
+    <text x="124" y="347" class="card-title-light">Продавец</text>
+    <text x="124" y="369" class="card-type-light">[Person]</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="45" y="430" width="190" height="105" rx="16" class="client"/>
+    <rect x="61" y="447" width="42" height="58" rx="5" fill="#e0e7ff" stroke="#6366f1"/>
+    <circle cx="82" cy="496" r="2.5" fill="#6366f1"/>
+    <text x="119" y="462" class="card-title">Web / Mobile</text>
+    <text x="119" y="483" class="card-type">[CONTAINER]</text>
+    <text x="119" y="506" class="card-copy">Клиентский UI</text>
+  </g>
+
+  <!-- Gateway -->
+  <g filter="url(#shadow)">
+    <rect x="680" y="190" width="410" height="95" rx="18" class="gateway"/>
+    <text x="885" y="226" text-anchor="middle" class="card-title-light">API Gateway</text>
+    <text x="885" y="249" text-anchor="middle" class="card-type-light">[CONTAINER · EDGE]</text>
+    <text x="885" y="271" text-anchor="middle" class="card-copy-light">Маршрутизация · JWT · correlation ID</text>
+  </g>
+
+  <!-- Top service row -->
+  <g filter="url(#shadow)">
+    <rect x="300" y="360" width="260" height="130" rx="16" class="service"/>
+    <path d="M316 360 H544 Q560 360 560 376 V398 H300 V376 Q300 360 316 360" class="service-band"/>
+    <text x="322" y="386" class="card-type">IDENTITY &amp; ACCESS</text>
+    <text x="322" y="426" class="card-title">User Service</text>
+    <text x="322" y="449" class="card-copy">Аккаунты, роли, профиль</text>
+    <text x="322" y="471" class="card-copy">и адреса пользователей</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="620" y="360" width="260" height="130" rx="16" class="service"/>
+    <path d="M636 360 H864 Q880 360 880 376 V398 H620 V376 Q620 360 636 360" class="service-band"/>
+    <text x="642" y="386" class="card-type">ASSORTMENT</text>
+    <text x="642" y="426" class="card-title">Catalog Service</text>
+    <text x="642" y="449" class="card-copy">Товары, категории, цены</text>
+    <text x="642" y="471" class="card-copy">и публикация ассортимента</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="940" y="360" width="260" height="130" rx="16" class="service"/>
+    <path d="M956 360 H1184 Q1200 360 1200 376 V398 H940 V376 Q940 360 956 360" class="feed-band"/>
+    <text x="962" y="386" class="card-type" fill="#0f766e">PERSONALIZATION</text>
+    <text x="962" y="426" class="card-title">Feed Service</text>
+    <text x="962" y="449" class="card-copy">Сигналы, признаки</text>
+    <text x="962" y="471" class="card-copy">и ранжирование ленты</text>
+  </g>
+
+  <!-- Top databases -->
+  <g>
+    <rect x="330" y="515" width="200" height="85" rx="14" class="database"/>
+    <ellipse cx="358" cy="546" rx="14" ry="6" fill="#c7d2fe" stroke="#6366f1"/>
+    <path d="M344 546 V566 C344 574 372 574 372 566 V546" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="385" y="548" class="db-title">User DB</text>
+    <text x="385" y="570" class="db-copy">PostgreSQL</text>
+    <text x="350" y="590" class="db-copy">персональные данные</text>
+  </g>
+  <g>
+    <rect x="650" y="515" width="200" height="85" rx="14" class="database"/>
+    <ellipse cx="678" cy="546" rx="14" ry="6" fill="#c7d2fe" stroke="#6366f1"/>
+    <path d="M664 546 V566 C664 574 692 574 692 566 V546" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="705" y="548" class="db-title">Catalog DB</text>
+    <text x="705" y="570" class="db-copy">PostgreSQL</text>
+    <text x="670" y="590" class="db-copy">товары и цены</text>
+  </g>
+  <g>
+    <rect x="970" y="515" width="200" height="85" rx="14" class="database"/>
+    <ellipse cx="998" cy="546" rx="14" ry="6" fill="#a5f3fc" stroke="#0891b2"/>
+    <path d="M984 546 V566 C984 574 1012 574 1012 566 V546" fill="#cffafe" stroke="#0891b2"/>
+    <text x="1025" y="548" class="db-title">Feed Store</text>
+    <text x="1025" y="570" class="db-copy">Key-value / analytics</text>
+    <text x="990" y="590" class="db-copy">проекции и признаки</text>
+  </g>
+
+  <!-- Broker -->
+  <g filter="url(#shadow)">
+    <rect x="530" y="650" width="740" height="80" rx="24" class="broker"/>
+    <circle cx="578" cy="690" r="21" fill="#fbcfe8" opacity=".95"/>
+    <path d="M567 682 H589 M567 690 H589 M567 698 H589" stroke="#9d174d" stroke-width="3" stroke-linecap="round"/>
+    <text x="620" y="684" class="card-title-light">Event Broker</text>
+    <text x="620" y="707" class="card-type-light">KAFKA-COMPATIBLE · AT LEAST ONCE</text>
+    <text x="970" y="684" class="card-copy-light">ProductChanged · OrderCreated</text>
+    <text x="970" y="707" class="card-copy-light">PaymentResult · NotificationRequested</text>
+  </g>
+
+  <!-- Bottom service row -->
+  <g filter="url(#shadow)">
+    <rect x="380" y="790" width="280" height="130" rx="16" class="service"/>
+    <path d="M396 790 H644 Q660 790 660 806 V828 H380 V806 Q380 790 396 790" class="service-band"/>
+    <text x="402" y="816" class="card-type">CHECKOUT</text>
+    <text x="402" y="856" class="card-title">Order Service</text>
+    <text x="402" y="879" class="card-copy">Заказ, снимок позиций</text>
+    <text x="402" y="901" class="card-copy">и управление saga</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="730" y="790" width="280" height="130" rx="16" class="service"/>
+    <path d="M746 790 H994 Q1010 790 1010 806 V828 H730 V806 Q730 790 746 790" class="payment-band"/>
+    <text x="752" y="816" class="card-type" fill="#7e22ce">FINANCE</text>
+    <text x="752" y="856" class="card-title">Payment Service</text>
+    <text x="752" y="879" class="card-copy">Intent'ы, возвраты</text>
+    <text x="752" y="901" class="card-copy">проводки и сверка</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="1080" y="790" width="280" height="130" rx="16" class="service"/>
+    <path d="M1096 790 H1344 Q1360 790 1360 806 V828 H1080 V806 Q1080 790 1096 790" class="notification-band"/>
+    <text x="1102" y="816" class="card-type" fill="#c2410c">COMMUNICATIONS</text>
+    <text x="1102" y="856" class="card-title">Notification Service</text>
+    <text x="1102" y="879" class="card-copy">Шаблоны, настройки</text>
+    <text x="1102" y="901" class="card-copy">и журнал доставки</text>
+  </g>
+
+  <!-- Bottom databases -->
+  <g>
+    <rect x="420" y="945" width="200" height="85" rx="14" class="database"/>
+    <ellipse cx="448" cy="976" rx="14" ry="6" fill="#c7d2fe" stroke="#6366f1"/>
+    <path d="M434 976 V996 C434 1004 462 1004 462 996 V976" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="475" y="978" class="db-title">Order DB</text>
+    <text x="475" y="1000" class="db-copy">PostgreSQL</text>
+    <text x="440" y="1020" class="db-copy">заказы и snapshots</text>
+  </g>
+  <g>
+    <rect x="770" y="945" width="200" height="85" rx="14" class="database"/>
+    <ellipse cx="798" cy="976" rx="14" ry="6" fill="#e9d5ff" stroke="#9333ea"/>
+    <path d="M784 976 V996 C784 1004 812 1004 812 996 V976" fill="#f3e8ff" stroke="#9333ea"/>
+    <text x="825" y="978" class="db-title">Payment DB</text>
+    <text x="825" y="1000" class="db-copy">PostgreSQL</text>
+    <text x="790" y="1020" class="db-copy">транзакции и ledger</text>
+  </g>
+  <g>
+    <rect x="1120" y="945" width="200" height="85" rx="14" class="database"/>
+    <ellipse cx="1148" cy="976" rx="14" ry="6" fill="#fed7aa" stroke="#ea580c"/>
+    <path d="M1134 976 V996 C1134 1004 1162 1004 1162 996 V976" fill="#ffedd5" stroke="#ea580c"/>
+    <text x="1175" y="978" class="db-title">Notification DB</text>
+    <text x="1175" y="1000" class="db-copy">PostgreSQL</text>
+    <text x="1140" y="1020" class="db-copy">шаблоны и журнал</text>
+  </g>
+
+  <!-- External providers -->
+  <text x="1545" y="735" class="eyebrow">ВНЕШНИЕ СИСТЕМЫ</text>
+  <g filter="url(#shadow)">
+    <rect x="1545" y="770" width="210" height="100" rx="16" class="external"/>
+    <text x="1567" y="807" class="card-title">Payment Provider</text>
+    <text x="1567" y="830" class="card-type" fill="#c2410c">[EXTERNAL SYSTEM]</text>
+    <text x="1567" y="852" class="card-copy">Эквайринг и токены</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="1545" y="920" width="210" height="100" rx="16" class="external"/>
+    <text x="1567" y="957" class="card-title">Delivery Provider</text>
+    <text x="1567" y="980" class="card-type" fill="#c2410c">[EXTERNAL SYSTEM]</text>
+    <text x="1567" y="1002" class="card-copy">Email · SMS · Push</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(70 1164)">
+    <path d="M0 0 H70" class="sync"/>
+    <text x="84" y="5" class="legend">синхронный вызов</text>
+    <path d="M245 0 H315" class="event"/>
+    <text x="329" y="5" class="legend">доменное событие</text>
+    <rect x="505" y="-13" width="26" height="20" rx="5" class="database"/>
+    <text x="542" y="5" class="legend">хранилище принадлежит только своему сервису</text>
+    <text x="1400" y="5" class="legend">C4 level: Container</text>
+  </g>
+</svg>
